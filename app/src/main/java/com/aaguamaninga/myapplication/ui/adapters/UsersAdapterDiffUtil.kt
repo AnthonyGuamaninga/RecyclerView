@@ -3,17 +3,19 @@ package com.aaguamaninga.myapplication.ui.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.aaguamaninga.myapplication.R
 import com.aaguamaninga.myapplication.data.entities.Users
 import com.aaguamaninga.myapplication.databinding.ItemsUsersBinding
 
-class UsersAdapter(
+class UsersAdapterDiffUtil(
     private var onDeleteItem: (Int) -> Unit,
     private var onSelectItem: (Users) -> Unit
-) :RecyclerView.Adapter<UsersAdapter.UsersVH>() {
-    var listUsers: List<Users> = listOf()
+) : ListAdapter<Users, UsersAdapterDiffUtil.UsersVH>(DiffUtilUserCallback) {
+
     class UsersVH(view: View): RecyclerView.ViewHolder(view){
         private var binding: ItemsUsersBinding = ItemsUsersBinding.bind(view)
         fun render(
@@ -37,10 +39,18 @@ class UsersAdapter(
         val inflater = LayoutInflater.from(parent.context)
         return UsersVH(inflater.inflate(R.layout.items_users, parent, false))
     }
-
-    override fun getItemCount(): Int = listUsers.size
-
     override fun onBindViewHolder(holder: UsersVH, position: Int) {
-        holder.render(listUsers[position], onDeleteItem, onSelectItem)
+        holder.render(getItem(position), onDeleteItem, onSelectItem)
     }
+}
+
+private object DiffUtilUserCallback : DiffUtil.ItemCallback<Users>() {
+    override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
+        return oldItem == newItem
+    }
+
 }
