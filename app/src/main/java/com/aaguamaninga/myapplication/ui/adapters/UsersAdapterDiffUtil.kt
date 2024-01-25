@@ -10,21 +10,22 @@ import coil.load
 import com.aaguamaninga.myapplication.R
 import com.aaguamaninga.myapplication.data.entities.Users
 import com.aaguamaninga.myapplication.databinding.ItemsUsersBinding
+import com.aaguamaninga.myapplication.logic.entities.FullInfoAnimeLG
 
 class UsersAdapterDiffUtil(
     private var onDeleteItem: (Int) -> Unit,
-    private var onSelectItem: (Users) -> Unit
-) : ListAdapter<Users, UsersAdapterDiffUtil.UsersVH>(DiffUtilUserCallback) {
+    private var onSelectItem: (FullInfoAnimeLG) -> Unit
+) : ListAdapter<FullInfoAnimeLG, UsersAdapterDiffUtil.UsersVH>(DiffUtilUserCallback) {
 
     class UsersVH(view: View): RecyclerView.ViewHolder(view){
         private var binding: ItemsUsersBinding = ItemsUsersBinding.bind(view)
         fun render(
-            item: Users,
+            item: FullInfoAnimeLG,
             onDeleteItem: (Int) -> Unit,
-            onSelectItem: (Users) -> Unit){
+            onSelectItem: (FullInfoAnimeLG) -> Unit){
             binding.txtUserName.text = item.name
-            binding.txtUserDesc.text = item.desc
-            binding.imgUser.load(item.img)
+            binding.txtUserDesc.text = item.synapsis
+            binding.imgUser.load(item.big_image)
 
             binding.btnBorrar.setOnClickListener {
                 onDeleteItem(adapterPosition)
@@ -44,12 +45,13 @@ class UsersAdapterDiffUtil(
     }
 }
 
-private object DiffUtilUserCallback : DiffUtil.ItemCallback<Users>() {
-    override fun areItemsTheSame(oldItem: Users, newItem: Users): Boolean {
+
+private object DiffUtilUserCallback : DiffUtil.ItemCallback<FullInfoAnimeLG>() {
+    override fun areItemsTheSame(oldItem: FullInfoAnimeLG, newItem: FullInfoAnimeLG): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: Users, newItem: Users): Boolean {
+    override fun areContentsTheSame(oldItem: FullInfoAnimeLG, newItem: FullInfoAnimeLG): Boolean {
         return oldItem == newItem
     }
 
