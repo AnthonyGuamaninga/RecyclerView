@@ -8,7 +8,8 @@ import com.aaguamaninga.myapplication.core.Constants
 import com.aaguamaninga.myapplication.core.getFullInfoAnimeLG
 
 class JikanAnimeUserCase {
-    suspend fun getResponse(nameAnime: Int) : FullInfoAnimeLG {
+    suspend fun invoke(nameAnime: Int) : Result<FullInfoAnimeLG> {
+        var result: Result<FullInfoAnimeLG>?= null
         var infoAnime = FullInfoAnimeLG()
 
         try {
@@ -20,14 +21,16 @@ class JikanAnimeUserCase {
             if(call.isSuccessful){
                 val a = call.body()!!
                 infoAnime = a.getFullInfoAnimeLG()
+                result = Result.success(infoAnime) // POSIBLE ERROR
             }else{
                 Log.d(Constants.TAG, "Error en el llamado del API Jikan")
+                result = Result.failure(Exception("Error en el llamado del API Jikan"))
             }
         }catch (ex:Exception){
             Log.e(Constants.TAG, ex.stackTraceToString())
         }
 
-        return infoAnime
+        return result!!
 
     }
 
