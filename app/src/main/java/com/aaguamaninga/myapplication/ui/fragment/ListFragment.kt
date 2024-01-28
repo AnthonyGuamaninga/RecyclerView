@@ -21,7 +21,6 @@ import kotlinx.coroutines.withContext
 
 class ListFragment : Fragment() {
     private lateinit var binding: FragmentListBinding
-
     private var usersList : MutableList<FullInfoAnimeLG> = ArrayList()
     private var userDiffAdapter = UsersAdapterDiffUtil({deleteUsersDiff(it)}, {selectAnime(it)})
     override fun onCreateView(
@@ -59,8 +58,9 @@ class ListFragment : Fragment() {
                 JikanGetTopAnimesUserCase().invoke()
             }
             resp.onSuccess {listAnime ->
-                usersList.addAll(listAnime)
-                insertUsersDiff(usersList)
+                //usersList.addAll(listAnime)
+                //insertUsersDiff(usersList)
+                insertUsersDiff(listAnime)
             }
             resp.onFailure {ex ->
                 Snackbar.make(
